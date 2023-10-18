@@ -1,11 +1,20 @@
-# Use a base image with Java pre-installed
-FROM openjdk:11-jre-slim
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy your JAR file into the container (assuming it's in the same directory)
-COPY *.jar /app/
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Specify the command to run your Java application
-CMD ["java", "-jar", "*.jar"]
+# Install application dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Define the command to run your application
+CMD [ "node", "app.js" ]
