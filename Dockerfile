@@ -1,20 +1,14 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14
+# Use an official Java runtime as the base image
+FROM openjdk:8
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
+# Copy the compiled Java application JAR (if available) to the container
+COPY target/*.jar .
 
-# Install application dependencies
-RUN npm install
+# Expose the port your application will run on (adjust as needed)
+EXPOSE 8080
 
-# Copy the rest of the application code to the container
-COPY . .
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Define the command to run your application
-CMD [ "node", "app.js" ]
+# Define the command to run your Java application
+CMD ["java", "-jar", "*.jar"]
